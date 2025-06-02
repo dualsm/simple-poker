@@ -82,72 +82,25 @@ int main() {
 	for (auto card : hand){
 		// add to color vector
 		card->print_card();
-		auto color_vec = color_way.at(card->get_suit() % 2);
+		int curr_suit = card->get_suit();
+		int curr_rank = card->get_rank();
+
+		auto color_vec = color_way.at(curr_suit % 2); // mod(2): 0 = black, 1 = red
 		color_vec->push_back(card);
-		// add to rank vector
 		// -1 index for corresponding card value
-		std::vector<std::shared_ptr<Card>>* rank_vec_ptr;
-		auto ace_vec0 = rank_way.at(0);
-		auto ace_vec13 = rank_way.at(13);
-		switch (card->get_rank()){
-			case 14: // ace/
-				ace_vec0->push_back(card);
-				ace_vec13->push_back(card);
-				break;
-			case 13: // king 
-				rank_vec_ptr = suit_way.at(12);
-				rank_vec_ptr->push_back(card);
-				break;
-			case 12: // queen
-				rank_vec_ptr = suit_way.at(11);
-				rank_vec_ptr->push_back(card);
-				break;
-			case 11: // jack
-				rank_vec_ptr = suit_way.at(10);
-				rank_vec_ptr->push_back(card);
-				break;
-			case 10: // 10
-				rank_vec_ptr = suit_way.at(9);
-				rank_vec_ptr->push_back(card);
-				break;
-			case 9: // 9
-				rank_vec_ptr = suit_way.at(8); 
-				rank_vec_ptr->push_back(card);
-				break;
-			case 8: // 8 
-				rank_vec_ptr = suit_way.at(7); 
-				rank_vec_ptr->push_back(card);
-				break;
-			case 7: // 7
-				rank_vec_ptr = suit_way.at(6);
-				rank_vec_ptr->push_back(card);
-				break;
-			case 6: // 6
-				rank_vec_ptr = suit_way.at(5);
-				rank_vec_ptr->push_back(card);
-				break;
-			case 5: // 5 
-				rank_vec_ptr = suit_way.at(4);
-				rank_vec_ptr->push_back(card);
-				break;
-			case 4: // 4
-				rank_vec_ptr = suit_way.at(3);
-				rank_vec_ptr->push_back(card);
-				break;
-			case 3: // 3
-				rank_vec_ptr = suit_way.at(2);
-				rank_vec_ptr->push_back(card);
-				break;
-			case 2: // 2 
-				rank_vec_ptr = suit_way.at(1);
-				rank_vec_ptr->push_back(card);
-				break;
+		if (curr_rank == 14){	// ace
+			auto ace_vec0 = rank_way.at(0);
+			auto ace_vec13 = rank_way.at(13);
+			ace_vec0->push_back(card);
+			ace_vec13->push_back(card);
+		}
+		else{			// any other card
+			auto rank_vec_ptr = rank_way.at(card->get_rank() - 1);
+			rank_vec_ptr->push_back(card);
 		}
 		// add to suit vector
-		switch (card->get_suit()){
-			case 'S':
-				suit_vec
-		}	
+		auto suit_vec_ptr = suit_way.at(curr_suit);
+		suit_vec_ptr->push_back(card);	
 	}	
 	
 	return i;

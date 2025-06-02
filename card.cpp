@@ -18,23 +18,23 @@ int Card::get_rank(){
 
 /* 
 	Inputs: None
-	Outputs: Int; 1 = Spade, 2 = Heart, 3 = Club, 4 = Diamond
-	Notes: get_suit() % 2 for suit; 0 = Red, 1 = Black
+	Outputs: Int; 0 = Spade, 1 = Heart, 2 = Club, 3 = Diamond
+	Notes: get_suit() % 2 for suit; 0 = Black, 1 = Red
 */
 int Card::get_suit(){
 	int out_suit;
 	switch (this->suit){
 		case 'S':
-			out_suit = 1;
+			out_suit = 0;
 			break;	
 		case 'H':
-			out_suit = 2;
+			out_suit = 1;
 			break;	
 		case 'C':
-			out_suit = 3;
+			out_suit = 2;
 			break;	
 		case 'D':
-			out_suit = 4;
+			out_suit = 3;
 			break;	
 	}
 	return out_suit;
