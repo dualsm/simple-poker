@@ -5,11 +5,11 @@
 Card::Card(int rank, char suit){
 	this->suit = suit;
 	this->rank = rank;
-	std::cout << "Card constructor called on [" << this->suit << " " << this->rank << "]" << std::endl;
+	// std::cout << "Card constructor called on [" << this->suit << " " << this->rank << "]" << std::endl;
 };
 
 Card::~Card(){
-	std::cout << "Card destructor called on [" << this->suit << " " << this->rank << "]" << std::endl;
+	// std::cout << "Card destructor called on [" << this->suit << " " << this->rank << "]" << std::endl;
 };
 
 int Card::get_rank(){
@@ -29,7 +29,7 @@ int Card::get_suit(){
 			break;	
 		case 'H':
 			out_suit = 2;
-				break;	
+			break;	
 		case 'C':
 			out_suit = 3;
 			break;	
@@ -40,27 +40,31 @@ int Card::get_suit(){
 	return out_suit;
 }; 
 
-std::string Card::print_card(){
+std::string Card::get_card_text(){
 	// fill constructor
 	char format[7];
-	char p_rank[2];
+	char p_rank[3];
 	switch (this->rank){
-		case 1:
-			strncpy(p_rank, "A\0", 2);
+		case 14:
+			strncpy(p_rank, "A\0\0", 2);
 			break;
 		case 13:
-			strncpy(p_rank, "K\0", 2);
+			strncpy(p_rank, "K\0\0", 2);
 			break;
 		case 12:
-			strncpy(p_rank, "Q\0", 2);
+			strncpy(p_rank, "Q\0\0", 2);
 			break;
 		case 11:
-			strncpy(p_rank, "J\0", 2);
+			strncpy(p_rank, "J\0\0", 2);
 			break;
 		default:
-			snprintf(p_rank,2, "%d", this->rank);	
+			snprintf(p_rank,3, "%d", this->rank);	
 			break;
 		}	
 	snprintf(format, 7, "[%-2s %1s]",  p_rank, &this->suit);
 	return format;
-}; 
+};
+
+void Card::print_card(){
+	std::cout << Card::get_card_text() << std::endl;
+} 

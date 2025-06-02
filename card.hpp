@@ -15,6 +15,7 @@ class Card{
 			Notes: get_suit() % 2 for suit; 0 = Red, 1 = Black
 		*/
 		int get_suit(); 
-		std::string print_card(); 
+		std::string get_card_text(); 
+		void print_card();
 };
 #endif
