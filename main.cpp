@@ -61,34 +61,94 @@ int main() {
 		hand.push_back(deck.at(psuedo_rand));
 		deck.erase(deck.begin() + psuedo_rand); 
 	}
-	std::vector<std::vector<std::shared_ptr<Card>>* > color_way;
-	std::vector<std::vector<std::shared_ptr<Card>>* > rank_way;
-	std::vector<std::vector<std::shared_ptr<Card>>* > suit_way;
 
-	std::vector<std::vector<std::shared_ptr<Card>>* > vector2 (13, new std::vector<std::shared_ptr<Card>>);
+	// Hand Parsing for scoring - Line 65 to X
+	// Using a vector for each method of scoring (suit, color, rank)
+	// Vector at indicies implements chaining easily (what if we have 4 3's? -- makes 4 of a kind easy)
+	// For each hand type, iterate through the necessary list
+	// Once we determined each basic type, then assign to greater types.
 
-	
-	// init the vectors
+	// accessing each of xxxx_way with .at(idx) to check for scoring
 	// 2 vec for color
-	color_way.push_back(new std::vector<std::shared_ptr<Card>>);
-	color_way.push_back(new std::vector<std::shared_ptr<Card>>);
+	// 14 vec for rank, 0 = Ace, 1 = 2, ..., 12 = king, 13 = Ace (duplicate Ace @ 0, 13 for easy Straight identification (sliding iteration? end on idx 9 = Card 10)
 	// 4 vec for suit
-	rank_way.push_back(new std::vector<std::shared_ptr<Card>>);
-	rank_way.push_back(new std::vector<std::shared_ptr<Card>>);
-	rank_way.push_back(new std::vector<std::shared_ptr<Card>>);
-	rank_way.push_back(new std::vector<std::shared_ptr<Card>>);
-	// 13 vec for rank (2 off error!) idx 0 = 2; idx 12 = 14 (Ace)
-	for (int i = 0; i < 13; i++) rank_way.push_back(new std::vector<std::shared_ptr<Card>>);
+	std::vector<std::vector<std::shared_ptr<Card>>*> color_way(2, new (std::vector<std::shared_ptr<Card>>));
+	std::vector<std::vector<std::shared_ptr<Card>>*> rank_way(14, new (std::vector<std::shared_ptr<Card>>));
+	std::vector<std::vector<std::shared_ptr<Card>>*> suit_way(4, new (std::vector<std::shared_ptr<Card>>));
 
+	// auto ace_vec = rank_way.at(0);
+	// ace_vec->push_back(std::shared_ptr<Card>(new Card(14, 'H')));
 
 	for (auto card : hand){
+		// add to color vector
 		card->print_card();
-		if (card->get_suit() % 2 == 0){
-			auto black_vec = color_way.at(0);
+		auto color_vec = color_way.at(card->get_suit() % 2);
+		color_vec->push_back(card);
+		// add to rank vector
+		// -1 index for corresponding card value
+		std::vector<std::shared_ptr<Card>>* rank_vec_ptr;
+		auto ace_vec0 = rank_way.at(0);
+		auto ace_vec13 = rank_way.at(13);
+		switch (card->get_rank()){
+			case 14: // ace/
+				ace_vec0->push_back(card);
+				ace_vec13->push_back(card);
+				break;
+			case 13: // king 
+				rank_vec_ptr = suit_way.at(12);
+				rank_vec_ptr->push_back(card);
+				break;
+			case 12: // queen
+				rank_vec_ptr = suit_way.at(11);
+				rank_vec_ptr->push_back(card);
+				break;
+			case 11: // jack
+				rank_vec_ptr = suit_way.at(10);
+				rank_vec_ptr->push_back(card);
+				break;
+			case 10: // 10
+				rank_vec_ptr = suit_way.at(9);
+				rank_vec_ptr->push_back(card);
+				break;
+			case 9: // 9
+				rank_vec_ptr = suit_way.at(8); 
+				rank_vec_ptr->push_back(card);
+				break;
+			case 8: // 8 
+				rank_vec_ptr = suit_way.at(7); 
+				rank_vec_ptr->push_back(card);
+				break;
+			case 7: // 7
+				rank_vec_ptr = suit_way.at(6);
+				rank_vec_ptr->push_back(card);
+				break;
+			case 6: // 6
+				rank_vec_ptr = suit_way.at(5);
+				rank_vec_ptr->push_back(card);
+				break;
+			case 5: // 5 
+				rank_vec_ptr = suit_way.at(4);
+				rank_vec_ptr->push_back(card);
+				break;
+			case 4: // 4
+				rank_vec_ptr = suit_way.at(3);
+				rank_vec_ptr->push_back(card);
+				break;
+			case 3: // 3
+				rank_vec_ptr = suit_way.at(2);
+				rank_vec_ptr->push_back(card);
+				break;
+			case 2: // 2 
+				rank_vec_ptr = suit_way.at(1);
+				rank_vec_ptr->push_back(card);
+				break;
 		}
-	}
-	// SHCD, get_suit() % 2 = 0 for red, 1 for black?
-
+		// add to suit vector
+		switch (card->get_suit()){
+			case 'S':
+				suit_vec
+		}	
+	}	
 	
 	return i;
 }
