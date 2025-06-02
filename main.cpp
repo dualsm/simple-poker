@@ -21,6 +21,55 @@
 	- Red suits are even, H = 2 Heart, D = 4 Diamond
 	- Black suits are odd, S = 1 Spade, C = 3 Club
 */
+// score_ways = {color, suit, rank}
+void print_score_ways(std::vector<std::vector<std::vector<std::shared_ptr<Card>>*>> score_ways){
+		
+	return;
+};
+// 
+int parse_hand(
+	std::vector<std::shared_ptr<Card>> &hand,
+	std::vector<std::vector<std::shared_ptr<Card>>*> &color_way,
+	std::vector<std::vector<std::shared_ptr<Card>>*> &suit_way,
+	std::vector<std::vector<std::shared_ptr<Card>>*> &rank_way)
+{
+	for (auto card : hand){
+		// add to color vector
+		card->print_card();
+		int curr_suit = card->get_suit();
+		int curr_rank = card->get_rank();
+
+		auto color_vec = color_way.at(curr_suit % 2); // mod(2): 0 = black, 1 = red
+		color_vec->push_back(card);
+		// -1 index for corresponding card value
+		if (curr_rank == 14){	// ace
+			auto ace_vec0 = rank_way.at(0);
+			auto ace_vec13 = rank_way.at(13);
+			ace_vec0->push_back(card);
+			ace_vec13->push_back(card);
+		}
+		else{			// any other card
+			auto rank_vec_ptr = rank_way.at(card->get_rank() - 1);
+			rank_vec_ptr->push_back(card);
+		}
+		// add to suit vector
+		auto suit_vec_ptr = suit_way.at(curr_suit);
+		suit_vec_ptr->push_back(card);	
+	}	
+	return 0;
+}
+
+
+// Create a hand of 5 cards, popping from deck
+std::vector<std::shared_ptr<Card>> create_hand(std::vector<std::shared_ptr<Card>> &deck) {
+	std::vector<std::shared_ptr<Card>> hand;
+	for (int i = 0; i < 5; i++){
+		int psuedo_rand = rand() % deck.size(); //will always be in range
+		hand.push_back(deck.at(psuedo_rand));
+		deck.erase(deck.begin() + psuedo_rand); 
+	}
+	return hand;
+}
 
 int main() {
 
@@ -49,18 +98,7 @@ int main() {
 			deck.push_back(std::shared_ptr<Card> (new Card(j, suits[i])));
 	}	
 	std::cout << "Is deck empty? " << deck.empty()  << std::endl;
-//	while (1 != deck.empty()){
-//		auto temp = deck.back();
-//		temp->print_card(); 
-//		deck.pop_back();
-//	}
-	std::vector<std::shared_ptr<Card>> hand; 
-	// Create a hand of 5 cards, popping from deck
-	for (int i = 0; i < 5; i++){
-		int psuedo_rand = rand() % deck.size(); //will always be in range
-		hand.push_back(deck.at(psuedo_rand));
-		deck.erase(deck.begin() + psuedo_rand); 
-	}
+	std::vector<std::shared_ptr<Card>> hand = create_hand(deck); 
 
 	// Hand Parsing for scoring - Line 65 to X
 	// Using a vector for each method of scoring (suit, color, rank)
@@ -73,36 +111,12 @@ int main() {
 	// 14 vec for rank, 0 = Ace, 1 = 2, ..., 12 = king, 13 = Ace (duplicate Ace @ 0, 13 for easy Straight identification (sliding iteration? end on idx 9 = Card 10)
 	// 4 vec for suit
 	std::vector<std::vector<std::shared_ptr<Card>>*> color_way(2, new (std::vector<std::shared_ptr<Card>>));
-	std::vector<std::vector<std::shared_ptr<Card>>*> rank_way(14, new (std::vector<std::shared_ptr<Card>>));
 	std::vector<std::vector<std::shared_ptr<Card>>*> suit_way(4, new (std::vector<std::shared_ptr<Card>>));
-
-	// auto ace_vec = rank_way.at(0);
-	// ace_vec->push_back(std::shared_ptr<Card>(new Card(14, 'H')));
-
-	for (auto card : hand){
-		// add to color vector
-		card->print_card();
-		int curr_suit = card->get_suit();
-		int curr_rank = card->get_rank();
-
-		auto color_vec = color_way.at(curr_suit % 2); // mod(2): 0 = black, 1 = red
-		color_vec->push_back(card);
-		// -1 index for corresponding card value
-		if (curr_rank == 14){	// ace
-			auto ace_vec0 = rank_way.at(0);
-			auto ace_vec13 = rank_way.at(13);
-			ace_vec0->push_back(card);
-			ace_vec13->push_back(card);
-		}
-		else{			// any other card
-			auto rank_vec_ptr = rank_way.at(card->get_rank() - 1);
-			rank_vec_ptr->push_back(card);
-		}
-		// add to suit vector
-		auto suit_vec_ptr = suit_way.at(curr_suit);
-		suit_vec_ptr->push_back(card);	
-	}	
-	
+	std::vector<std::vector<std::shared_ptr<Card>>*> rank_way(14, new (std::vector<std::shared_ptr<Card>>));
+	std::vector<std::vector<std::vector<std::shared_ptr<Card>>*>> score_ways = {color_way, suit_way, rank_way};
+	int parse_result = parse_hand(hand, color_way, suit_way, rank_way);
+	if (parse_result != 0) std::cout << "ERROR: parse_hand()" << std::endl;
+	else { std::cout << "SUCCESS: parse_hand()" << std::endl; }
 	return i;
 }
 
