@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include "card.hpp"
+#include "handscore.hpp"
 /* 
 	Class List: 
 	- {Deck, Hand, Card, Player}
@@ -16,17 +17,10 @@
 
 /* 
 	Rank: 
-	- 1 = Ace,2,3,4,5,6,7,8,9,10,11=Jack,12=Queen,13=King
-	Suit:
-	- Red suits are even, H = 2 Heart, D = 4 Diamond
-	- Black suits are odd, S = 1 Spade, C = 3 Club
+	- 0=Ace, 1=2, ..., 12=King, 13=Ace
+
 */
 // score_ways = {color, suit, rank}
-void print_score_ways(std::vector<std::vector<std::vector<std::shared_ptr<Card>>*>> score_ways){
-		
-	return;
-};
-// 
 int parse_hand(
 	std::vector<std::shared_ptr<Card>> &hand,
 	std::vector<std::vector<std::shared_ptr<Card>>*> &color_way,
@@ -105,16 +99,10 @@ int main() {
 	// Vector at indicies implements chaining easily (what if we have 4 3's? -- makes 4 of a kind easy)
 	// For each hand type, iterate through the necessary list
 	// Once we determined each basic type, then assign to greater types.
+	HandScore hs_1(hand);
+	int parse_result = hs_1.parse_hand();	
 
-	// accessing each of xxxx_way with .at(idx) to check for scoring
-	// 2 vec for color
-	// 14 vec for rank, 0 = Ace, 1 = 2, ..., 12 = king, 13 = Ace (duplicate Ace @ 0, 13 for easy Straight identification (sliding iteration? end on idx 9 = Card 10)
-	// 4 vec for suit
-	std::vector<std::vector<std::shared_ptr<Card>>*> color_way(2, new (std::vector<std::shared_ptr<Card>>));
-	std::vector<std::vector<std::shared_ptr<Card>>*> suit_way(4, new (std::vector<std::shared_ptr<Card>>));
-	std::vector<std::vector<std::shared_ptr<Card>>*> rank_way(14, new (std::vector<std::shared_ptr<Card>>));
-	std::vector<std::vector<std::vector<std::shared_ptr<Card>>*>> score_ways = {color_way, suit_way, rank_way};
-	int parse_result = parse_hand(hand, color_way, suit_way, rank_way);
+
 	if (parse_result != 0) std::cout << "ERROR: parse_hand()" << std::endl;
 	else { std::cout << "SUCCESS: parse_hand()" << std::endl; }
 	return i;
