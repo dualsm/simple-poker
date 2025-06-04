@@ -119,22 +119,27 @@ int HandScore::score_full_house(){
 	int full_house_score = 0;
 	// two three of a kinds case... how do you choose which one is the pair? 
 	// how can you take out the cards... maybe we pop from vectors after we take? 
-	for (int i = this->score_vec.at(2).size() - 1; i >= 0; --i){
+	for (int i = this->score_vec.at(2).size() - 1; i > 0; --i){
 			
 		if (this->score_vec.at(2).at(i).size() == 3){
-			full_house_score += this->score_vec.at(2).at(i).at(0)->get_rank() * 3;
+			full_house_score = this->score_vec.at(2).at(i).at(0)->get_rank() * 3;
 			auto card1 = this->score_vec.at(2).at(i).at(0);
 			auto card2 = this->score_vec.at(2).at(i).at(1);
 			auto card3 = this->score_vec.at(2).at(i).at(2);
 			this->score_vec.at(2).at(i).pop_back();
 			this->score_vec.at(2).at(i).pop_back();
 			this->score_vec.at(2).at(i).pop_back();
-		
+			// ace case	
+			if (i == 13){	
+				this->score_vec.at(2).at(0).pop_back();
+				this->score_vec.at(2).at(0).pop_back();
+				this->score_vec.at(2).at(0).pop_back();
+			}
 			int pair_score = 0;
 			for (int j = this->score_vec.at(2).size() - 1; j >= 0; --j){
 				
 				if (this->score_vec.at(2).at(j).size() >= 2){
-					pair_score += this->score_vec.at(2).at(j).at(0)->get_rank() * 2;
+					pair_score = this->score_vec.at(2).at(j).at(0)->get_rank() * 2;
 					full_house_score += pair_score;
 					std::cout << "score_full_house(): Full House detected" << std::endl;
 					std::cout << "score_full_house(): Full House Value: " << full_house_score << std::endl;
@@ -146,6 +151,11 @@ int HandScore::score_full_house(){
 				this->score_vec.at(2).at(i).push_back(card1);
 				this->score_vec.at(2).at(i).push_back(card2);
 				this->score_vec.at(2).at(i).push_back(card3);
+				if (i == 13){	
+					this->score_vec.at(2).at(0).push_back(card1);
+					this->score_vec.at(2).at(0).push_back(card2);
+					this->score_vec.at(2).at(0).push_back(card3);
+				}
 			}	
 		}		
 	}
@@ -156,13 +166,18 @@ int HandScore::score_three_of_a_kind(){
 	int three_oak_score = 0;
 	// two three of a kinds case... how do you choose which one is the pair? 
 	// how can you take out the cards... maybe we pop from vectors after we take? 
-	for (int i = this->score_vec.at(2).size() - 1; i >= 0; --i){
+	for (int i = this->score_vec.at(2).size() - 1; i > 0; --i){
 			
 		if (this->score_vec.at(2).at(i).size() == 3){
-			three_oak_score += this->score_vec.at(2).at(i).at(0)->get_rank() * 3;
+			three_oak_score = this->score_vec.at(2).at(i).at(0)->get_rank() * 3;
 			this->score_vec.at(2).at(i).pop_back();
 			this->score_vec.at(2).at(i).pop_back();
 			this->score_vec.at(2).at(i).pop_back();
+			if (i == 13){	
+				this->score_vec.at(2).at(0).pop_back();
+				this->score_vec.at(2).at(0).pop_back();
+				this->score_vec.at(2).at(0).pop_back();
+			}
 			std::cout << "score_three_of_a_kind(): Three Of A Kind detected" << std::endl;
 			std::cout << "score_three_of_a_kind(): Three Of A Kind Value: " << three_oak_score << std::endl;
 		}	
@@ -170,18 +185,23 @@ int HandScore::score_three_of_a_kind(){
 	return three_oak_score;
 };
 int HandScore::score_pair(){
-	int pair_score = 0;
-	for (int i = this->score_vec.at(2).size() - 1; i >= 0; --i){
+	int inner_pair_score = 0;
+	for (int i = this->score_vec.at(2).size() - 1; i > 0; --i){
 			
 		if (this->score_vec.at(2).at(i).size() >= 2){
-			pair_score += this->score_vec.at(2).at(i).at(0)->get_rank() * 2;
+			inner_pair_score = this->score_vec.at(2).at(i).at(0)->get_rank() * 2;
 			this->score_vec.at(2).at(i).pop_back();
 			this->score_vec.at(2).at(i).pop_back();
+			// ace case
+			if (i == 13){	
+				this->score_vec.at(2).at(0).pop_back();
+				this->score_vec.at(2).at(0).pop_back();
+			}
 			std::cout << "score_pair(): Pair detected" << std::endl;
-			std::cout << "score_pair(): Pair Value: " << pair_score << std::endl;
+			std::cout << "score_pair(): Pair Value: " << inner_pair_score << std::endl;
 		}	
 	}
-	return pair_score;
+	return inner_pair_score;
 
 };
 
@@ -205,11 +225,13 @@ int HandScore::calc_score(){
 		total_score += flush_score;
 		// set rank as flush
 	}	
+	
 	int straight_score = HandScore::score_straight();	
 	if (straight_score != 0){
 		total_score += straight_score;
 		// set rank as straight
 	} 
+
 	if (straight_score != 0 && flush_score != 0){
 		// straight flush, royal won't matter cuz we just compare hand values anyways
 		int REPLACE_STRAIGHT_FLUSH;
@@ -223,6 +245,7 @@ int HandScore::calc_score(){
 		int REPLACE_FOUR_OAK;
 		return total_score;
 	}
+
 	int full_house_score = HandScore::score_full_house();
 	if (full_house_score != 0){
 		total_score += full_house_score;
@@ -249,6 +272,7 @@ int HandScore::calc_score(){
 		int REPLACE_PAIR;
 		int two_pair_score = HandScore::score_pair();
 		if (two_pair_score != 0){
+			total_score += two_pair_score;
 			// set rank as two_pair
 			int REPLACE_TWO_PAIR;
 		}
