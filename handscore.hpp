@@ -13,6 +13,7 @@ class HandScore{
 		};
 		std::vector<std::shared_ptr<Card>> hand;
 		int total_score = 0;
+		int hand_rank;
 	public:
 		/* each player gets a player score object each round */
 		HandScore(std::vector<std::shared_ptr<Card>>& hand){
@@ -20,14 +21,14 @@ class HandScore{
 		};
 		~HandScore() = default;
 		int parse_hand();
-		int score_flush(){return 1;};
-		int score_straight(){return 1;};
-		int score_four_of_a_kind(){return 1;};
-		int score_three_of_a_kind(){return 1;};
-		int score_two_pair(){return 1;};
-		int score_pair(){return 1;};
-		int score_high_card(){return 1;};
-		int calc_score(){return 1;};
+		int score_four_of_a_kind();
+		int score_full_house();
+		int score_flush();
+		int score_straight();
+		int score_three_of_a_kind();
+		int score_pair();
+		int score_high_card();
+		int calc_score();
 		void debug_print_vectors();
 };
 #endif

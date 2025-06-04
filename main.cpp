@@ -1,11 +1,12 @@
 #include <vector>
+#include <random>
 #include <iostream> 
 #include <memory>
 #include <string>
 #include "card.hpp"
 #include "handscore.hpp"
 /* 
-	Class List: 
+	Class List ? 
 	- {Deck, Hand, Card, Player}
 	Class structure: 
 	- Deck has an array of Cards
@@ -15,31 +16,28 @@
 
 */
 
-/* 
-	Rank: 
-	- 0=Ace, 1=2, ..., 12=King, 13=Ace
-
-*/
-// score_ways = {color, suit, rank}
-
 // Create a hand of 5 cards, popping from deck
 std::vector<std::shared_ptr<Card>> create_hand(std::vector<std::shared_ptr<Card>> &deck) {
 	std::vector<std::shared_ptr<Card>> hand;
+	std::random_device rd;
 	for (int i = 0; i < 5; i++){
-		int psuedo_rand = rand() % deck.size(); //will always be in range
+		int psuedo_rand = rd() % deck.size(); //will always be in range
 		hand.push_back(deck.at(psuedo_rand));
 		deck.erase(deck.begin() + psuedo_rand); 
 	}
+	
+	/*
+	for (int i = 0; i < 5; ++i){
+		hand.push_back(deck.at(i));
+	}
+	
+	*/
 	return hand;
 }
 
 int main() {
 
-	srand(time(0));	
-	int i = 1;
-
 	// 2 3 4 5 6 7 8 9 10 J Q K == 12 numbers
-
 	
 	// make full deck & print full deck
 	// array of shared ptrs?
@@ -65,6 +63,8 @@ int main() {
 
 	HandScoreObj.debug_print_vectors();
 	
-	return i;
+	int calc_score = HandScoreObj.calc_score();
+	std::cout << "HandScoreObj calc_score(): " << calc_score << std::endl << std::endl;
+	return calc_score;
 }
 
