@@ -278,9 +278,9 @@ int HandScore::calc_score(){
 		}
 		return total_score;
 	}
-/*	int high_card_score = HandScore::score_high_card();
+	int high_card_score = HandScore::score_high_card();
 	int REPLACE_HIGH_CARD;
 	total_score += high_card_score;
-*/	
+	
 	return total_score;
 };
