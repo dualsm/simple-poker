@@ -20,7 +20,7 @@
 std::vector<std::shared_ptr<Card>> create_hand(std::vector<std::shared_ptr<Card>> &deck) {
 	std::vector<std::shared_ptr<Card>> hand;
 	std::random_device rd;
-	for (int i = 0; i < 5; i++){
+	for (int i = 0; i < 7; i++){
 		int psuedo_rand = rd() % deck.size(); //will always be in range
 		hand.push_back(deck.at(psuedo_rand));
 		deck.erase(deck.begin() + psuedo_rand); 
