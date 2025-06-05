@@ -1,11 +1,9 @@
 #!/bin/bash
-make
-while true; do
-	./main
-	if [ $? -ne 0 ]; then
-		echo 'test.sh: score detected'
-		break
-	else
-		echo 'test.sh: fail'
-	fi
-done
+./test_pair.sh
+./test_two_pair.sh
+./test_three_oak.sh
+./test_flush.sh
+./test_straight.sh
+./test_full_house.sh
+./test_four_oak.sh
+./test_straight_flush.sh
