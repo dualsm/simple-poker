@@ -1,9 +1,9 @@
 #!/bin/bash
-./test_pair.sh
-./test_two_pair.sh
-./test_three_oak.sh
-./test_flush.sh
-./test_straight.sh
-./test_full_house.sh
-./test_four_oak.sh
-./test_straight_flush.sh
+./tests/test_pair.sh
+./tests/test_two_pair.sh
+./tests/test_three_oak.sh
+./tests/test_flush.sh
+./tests/test_straight.sh
+./tests/test_full_house.sh
+./tests/test_four_oak.sh
+./tests/test_straight_flush.sh

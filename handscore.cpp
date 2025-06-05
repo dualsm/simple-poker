@@ -97,7 +97,7 @@ int HandScore::score_straight(){
 			if (cards_scored == 5){
 				straight_score = curr_straight_score;
 				std::cout << "score_straight(): Straight detected" << std::endl;
-				std::cout << "score_straight(): End Straight Value: " << straight_score << std::endl;
+				std::cout << "score_straight(): Straight Value: " << straight_score << std::endl;
 			}	
 		}		
 		
